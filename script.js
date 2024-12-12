@@ -36,16 +36,7 @@ window.addEventListener('scroll', () => {
 // Falling Hearts Animation
 setInterval(() => createItem('heart', '❤️', '.hearts-container', 5000, 3000), 300);
 
-// Floating Heart Bubbles Animation
-setInterval(() => createItem('heart-bubble', '💖', '.heart-bubbles-container', 6000, 3000), 500);
-
-// Twinkling Stars Animation
-setInterval(() => createItem('star', '', '.star-container', 3000, 3000), 300);
-
-// Rose Petals Animation
-setInterval(() => createItem('rose-petal', '🌹', '.rose-petals-container', 5000, 3000), 700);
-
-// Function to Create Animated Items (Hearts, Bubbles, Stars, Petals)
+// Function to Create Falling Items
 function createItem(className, content, containerSelector, lifetime, duration) {
   const item = document.createElement('div');
   item.classList.add(className);
