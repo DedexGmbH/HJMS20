@@ -1,60 +1,56 @@
-// Name Animations: Sliding In and Out on Scroll
+let autoScrollInterval;
+let userScrolling = false;
+let autoScrollDelay;
+
+// Function to auto-scroll the page
+function startAutoScroll() {
+  autoScrollInterval = setInterval(() => {
+    window.scrollBy(0, 1);
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      clearInterval(autoScrollInterval);
+    }
+  }, 10);
+}
+
+// Stop auto-scrolling
+function stopAutoScroll() {
+  clearInterval(autoScrollInterval);
+}
+
+// Manage user scrolling
 window.addEventListener('scroll', () => {
-  const names = document.querySelectorAll('.name');
-  const nameSection = document.querySelector('.name-section');
-  const triggerPoint = window.innerHeight / 1.5; // Trigger point similar to images
+  if (!userScrolling) {
+    userScrolling = true;
+    stopAutoScroll();
+  }
 
-  const sectionTop = nameSection.getBoundingClientRect().top;
+  clearTimeout(autoScrollDelay);
+  autoScrollDelay = setTimeout(() => {
+    userScrolling = false;
+    startAutoScroll();
+  }, 3000);
+});
 
-  if (sectionTop < triggerPoint && sectionTop > -triggerPoint) {
-    // Section is visible; slide in the names
-    names.forEach(name => name.classList.add('active'));
+// Scroll-to-top button
+const scrollToTopButton = document.createElement('button');
+scrollToTopButton.innerText = '⬆️ Top';
+scrollToTopButton.className = 'scroll-to-top';
+document.body.appendChild(scrollToTopButton);
+
+scrollToTopButton.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  stopAutoScroll();
+  setTimeout(startAutoScroll, 3000);
+});
+
+// Show/hide button
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 200) {
+    scrollToTopButton.classList.add('show');
   } else {
-    // Section is out of view; slide out the names
-    names.forEach(name => name.classList.remove('active'));
+    scrollToTopButton.classList.remove('show');
   }
 });
 
-// Immediate Name Slide-In on Page Load
-window.addEventListener('load', () => {
-  document.querySelectorAll('.name').forEach(name => name.classList.add('active'));
-});
-
-// Image Animations: Slide In as They Scroll Into View
-const imageItems = document.querySelectorAll('.image-item');
-window.addEventListener('scroll', () => {
-  imageItems.forEach(item => {
-    const triggerPoint = window.innerHeight / 1.5;
-    if (item.getBoundingClientRect().top < triggerPoint) {
-      item.classList.add('active');
-    } else {
-      item.classList.remove('active');
-    }
-  });
-});
-
-// Falling Hearts Animation
-setInterval(() => createItem('heart', '❤️', '.hearts-container', 5000, 3000), 300);
-
-// Floating Heart Bubbles Animation
-setInterval(() => createItem('heart-bubble', '💖', '.heart-bubbles-container', 6000, 3000), 500);
-
-// Twinkling Stars Animation
-setInterval(() => createItem('star', '', '.star-container', 3000, 3000), 300);
-
-// Rose Petals Animation
-setInterval(() => createItem('rose-petal', '🌹', '.rose-petals-container', 5000, 3000), 700);
-
-// Function to Create Animated Items (Hearts, Bubbles, Stars, Petals)
-function createItem(className, content, containerSelector, lifetime, duration) {
-  const item = document.createElement('div');
-  item.classList.add(className);
-  item.textContent = content;
-  item.style.left = `${Math.random() * 100}vw`;
-  item.style.animationDuration = `${Math.random() * 2 + duration / 1000}s`;
-  document.querySelector(containerSelector).appendChild(item);
-  setTimeout(() => item.remove(), lifetime);
-}
-
-
-//WHAT THE FUCK THIS I A TEST
+// Start auto-scroll
+startAutoScroll();
