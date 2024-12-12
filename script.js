@@ -55,3 +55,6 @@ function createItem(className, content, containerSelector, lifetime, duration) {
   document.querySelector(containerSelector).appendChild(item);
   setTimeout(() => item.remove(), lifetime);
 }
+
+
+//WHAT THE FUCK THIS I A TEST
